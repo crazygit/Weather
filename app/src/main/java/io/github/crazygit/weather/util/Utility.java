@@ -2,6 +2,8 @@ package io.github.crazygit.weather.util;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +11,7 @@ import org.json.JSONObject;
 import io.github.crazygit.weather.db.City;
 import io.github.crazygit.weather.db.County;
 import io.github.crazygit.weather.db.Province;
+import io.github.crazygit.weather.gson.Weather;
 
 public class Utility {
 
@@ -71,5 +74,17 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    public static Weather handleWeatherReponse(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
