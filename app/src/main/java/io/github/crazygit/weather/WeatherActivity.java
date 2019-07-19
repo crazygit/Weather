@@ -1,5 +1,6 @@
 package io.github.crazygit.weather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -33,6 +34,8 @@ import okhttp3.Response;
 
 public class WeatherActivity extends AppCompatActivity {
     private static final String TAG = "WeatherActivity";
+    public SwipeRefreshLayout swipeRefreshLayout;
+    public DrawerLayout drawerLayout;
     private ScrollView weatherLayout;
     private TextView titleCity;
     private TextView titleUpdateTime;
@@ -45,9 +48,7 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView carWashText;
     private TextView sportText;
     private ImageView bingPicImg;
-    public SwipeRefreshLayout swipeRefreshLayout;
     private String mWeatherId;
-    public DrawerLayout drawerLayout;
     private Button navButton;
 
     @Override
@@ -110,7 +111,7 @@ public class WeatherActivity extends AppCompatActivity {
 
     private void loadingPic() {
         String requestBingPic = "http://guolin.tech/api/bing_pic";
-        HttpUtil.SendOKHttpRequest(requestBingPic, new Callback() {
+        HttpUtil.sendOKHttpRequest(requestBingPic, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -136,7 +137,7 @@ public class WeatherActivity extends AppCompatActivity {
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" +
                 weatherId + "&key=bc0418b57b2d4918819d3974ac1285d9";
 
-        HttpUtil.SendOKHttpRequest(weatherUrl, new Callback() {
+        HttpUtil.sendOKHttpRequest(weatherUrl, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
@@ -202,5 +203,7 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 }

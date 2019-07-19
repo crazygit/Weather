@@ -25,7 +25,6 @@ import java.util.List;
 import io.github.crazygit.weather.db.City;
 import io.github.crazygit.weather.db.County;
 import io.github.crazygit.weather.db.Province;
-import io.github.crazygit.weather.gson.Weather;
 import io.github.crazygit.weather.util.HttpUtil;
 import io.github.crazygit.weather.util.LogUtil;
 import io.github.crazygit.weather.util.Utility;
@@ -125,7 +124,7 @@ public class ChooseAreaFragment extends Fragment {
 
     private void queryFromServer(String address, final String type) {
         showProgressDialog();
-        HttpUtil.SendOKHttpRequest(address, new Callback() {
+        HttpUtil.sendOKHttpRequest(address, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 getActivity().runOnUiThread(new Runnable() {
